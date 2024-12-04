@@ -29,7 +29,7 @@ export const tasks = new Hono()
 
 		return c.html(<TaskListItem task={newTasks[0]} />);
 	})
-	.delete(':taskId', async (c) => {
+	.delete('/:taskId', async (c) => {
 		await sleep(250);
 		const taskId = c.req.param('taskId');
 
