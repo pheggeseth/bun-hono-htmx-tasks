@@ -1,3 +1,5 @@
+import { Button } from './Button';
+
 export function TaskForm({ taskListId }: { taskListId: string }) {
 	return (
 		<form
@@ -14,9 +16,7 @@ export function TaskForm({ taskListId }: { taskListId: string }) {
 				required
 				placeholder="What needs to be done?"
 			/>
-			<button class="text-sm" type="submit">
-				Add task
-			</button>
+			<Button type="submit">Add task</Button>
 		</form>
 	);
 }

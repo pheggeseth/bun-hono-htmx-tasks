@@ -1,4 +1,5 @@
 import type { Task } from '../db/schema';
+import { Button } from './Button';
 
 export function TaskListItem({ task }: { task: Task }) {
 	const id = `task-${task.id}`;
@@ -7,15 +8,14 @@ export function TaskListItem({ task }: { task: Task }) {
 		<li id={id} class="border rounded py-1 px-2 mt-2 first:mt-0">
 			<div class="flex justify-between">
 				<div>{task.title}</div>
-				<button
-					class="text-sm"
+				<Button
 					type="button"
 					hx-delete={`/api/tasks/${task.id}`}
 					hx-target="closest li"
 					hx-swap="delete"
 				>
 					Delete
-				</button>
+				</Button>
 			</div>
 		</li>
 	);
