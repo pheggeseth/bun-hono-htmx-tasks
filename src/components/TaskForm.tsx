@@ -1,8 +1,8 @@
-export function TaskForm() {
+export function TaskForm({ taskListId }: { taskListId: string }) {
 	return (
 		<form
-			hx-post="/api/task"
-			hx-target="#task-list"
+			hx-post="/api/tasks"
+			hx-target={`#${taskListId}`}
 			hx-swap="beforeend"
 			hx-on-htmx-after-request="this.reset()"
 		>

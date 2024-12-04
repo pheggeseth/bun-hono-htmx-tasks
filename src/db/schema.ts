@@ -8,3 +8,5 @@ export const tasksTable = sqliteTable('tasks_table', {
 		.$defaultFn(() => new Date()),
 	completionDate: int(),
 });
+
+export type Task = typeof tasksTable.$inferSelect;
