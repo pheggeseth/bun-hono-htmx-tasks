@@ -1,4 +1,3 @@
-import { sleep } from 'bun';
 import { eq } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { TaskListItem } from '../components/TaskListItem';
@@ -7,7 +6,6 @@ import { tasksTable } from '../db/schema';
 
 export const tasks = new Hono()
 	.get('/', async (c) => {
-		await sleep(250);
 		const tasks = await db.select().from(tasksTable);
 		return c.html(
 			<>
@@ -18,7 +16,6 @@ export const tasks = new Hono()
 		);
 	})
 	.post('/', async (c) => {
-		await sleep(250);
 		const { title } = await c.req.parseBody();
 
 		if (typeof title !== 'string') {
@@ -29,8 +26,29 @@ export const tasks = new Hono()
 
 		return c.html(<TaskListItem task={newTasks[0]} />);
 	})
+	.post('/:taskId/complete', async (c) => {
+		const taskId = c.req.param('taskId');
+
+		const updatedTasks = await db
+			.update(tasksTable)
+			.set({ completionDate: new Date() })
+			.where(eq(tasksTable.id, Number(taskId)))
+			.returning();
+
+		return c.html(<TaskListItem task={updatedTasks[0]} />);
+	})
+	.post('/:taskId/uncomplete', async (c) => {
+		const taskId = c.req.param('taskId');
+
+		const updatedTasks = await db
+			.update(tasksTable)
+			.set({ completionDate: null })
+			.where(eq(tasksTable.id, Number(taskId)))
+			.returning();
+
+		return c.html(<TaskListItem task={updatedTasks[0]} />);
+	})
 	.delete('/:taskId', async (c) => {
-		await sleep(250);
 		const taskId = c.req.param('taskId');
 
 		await db.delete(tasksTable).where(eq(tasksTable.id, Number(taskId)));

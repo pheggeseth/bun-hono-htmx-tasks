@@ -8,7 +8,13 @@ export function TaskListItem({ task }: { task: Task }) {
 		<li id={id} class="border rounded py-2 px-3 mt-2 first:mt-0 bg-white">
 			<div class="flex justify-between">
 				<div class="flex items-center gap-2">
-					<input type="checkbox" />
+					<input
+						type="checkbox"
+						checked={!!task.completionDate}
+						hx-post={`/api/tasks/${task.id}/${task.completionDate ? 'uncomplete' : 'complete'}`}
+						hx-target="closest li"
+						hx-swap="outerHTML"
+					/>
 					<div>{task.title}</div>
 				</div>
 				<Button
@@ -37,5 +43,11 @@ export function TaskListItem({ task }: { task: Task }) {
 
 const dateFormatOptions: Parameters<Date['toLocaleDateString']> = [
 	undefined,
-	{ dateStyle: 'medium' },
+	{
+		month: 'short',
+		day: 'numeric',
+		year: 'numeric',
+		hour: 'numeric',
+		minute: 'numeric',
+	},
 ];
