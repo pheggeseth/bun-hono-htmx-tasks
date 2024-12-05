@@ -1,22 +1,63 @@
-import { desc, eq } from 'drizzle-orm';
+import { desc, eq, isNotNull, isNull } from 'drizzle-orm';
 import { Hono } from 'hono';
+import { Button } from '../components/Button';
 import { TaskListItem } from '../components/TaskListItem';
 import { db } from '../db';
 import { tasksTable } from '../db/schema';
 
 export const tasks = new Hono()
 	.get('/', async (c) => {
-		const tasks = await db
-			.select()
-			.from(tasksTable)
-			.orderBy(desc(tasksTable.creationDate));
+		const filter = c.req.query('filter');
+
+		let tasks: (typeof tasksTable.$inferSelect)[] = [];
+
+		if (filter === 'active') {
+			tasks = await db
+				.select()
+				.from(tasksTable)
+				.where(isNull(tasksTable.completionDate))
+				.orderBy(desc(tasksTable.creationDate));
+		} else if (filter === 'completed') {
+			tasks = await db
+				.select()
+				.from(tasksTable)
+				.where(isNotNull(tasksTable.completionDate))
+				.orderBy(desc(tasksTable.creationDate));
+		} else {
+			tasks = await db
+				.select()
+				.from(tasksTable)
+				.orderBy(desc(tasksTable.creationDate));
+		}
 
 		return c.html(
-			<>
-				{tasks.map((task) => (
-					<TaskListItem key={task.id} task={task} />
-				))}
-			</>,
+			<div id="wrapper">
+				<div class="flex gap-1 mb-2">
+					<div>Show:</div>
+					<Button hx-get="/api/tasks" hx-target="#wrapper" hx-swap="outerHTML">
+						All
+					</Button>
+					<Button
+						hx-get="/api/tasks?filter=active"
+						hx-target="#wrapper"
+						hx-swap="outerHTML"
+					>
+						Active
+					</Button>
+					<Button
+						hx-get="/api/tasks?filter=completed"
+						hx-target="#wrapper"
+						hx-swap="outerHTML"
+					>
+						Completed
+					</Button>
+				</div>
+				<ul>
+					{tasks.map((task) => (
+						<TaskListItem key={task.id} task={task} />
+					))}
+				</ul>
+			</div>,
 		);
 	})
 	.post('/', async (c) => {

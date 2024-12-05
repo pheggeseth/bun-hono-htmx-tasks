@@ -1,3 +1,3 @@
 export function TaskList({ id }: { id: string }) {
-	return <ul id={id} hx-get="/api/tasks" hx-trigger="load" />;
+	return <div id={id} hx-get="/api/tasks" hx-trigger="load" />;
 }
