@@ -5,9 +5,12 @@ export function TaskListItem({ task }: { task: Task }) {
 	const id = `task-${task.id}`;
 
 	return (
-		<li id={id} class="border rounded py-1 px-2 mt-2 first:mt-0">
+		<li id={id} class="border rounded py-2 px-3 mt-2 first:mt-0 bg-white">
 			<div class="flex justify-between">
-				<div>{task.title}</div>
+				<div class="flex items-center gap-2">
+					<input type="checkbox" />
+					<div>{task.title}</div>
+				</div>
 				<Button
 					type="button"
 					hx-delete={`/api/tasks/${task.id}`}
@@ -17,6 +20,22 @@ export function TaskListItem({ task }: { task: Task }) {
 					Delete
 				</Button>
 			</div>
+			<div class="flex mt-1">
+				{task.completionDate && (
+					<div class="text-xs italic">
+						Completed on{' '}
+						{task.completionDate.toLocaleDateString(...dateFormatOptions)}
+					</div>
+				)}
+				<div class="text-xs italic ml-auto">
+					Added on {task.creationDate.toLocaleDateString(...dateFormatOptions)}
+				</div>
+			</div>
 		</li>
 	);
 }
+
+const dateFormatOptions: Parameters<Date['toLocaleDateString']> = [
+	undefined,
+	{ dateStyle: 'medium' },
+];

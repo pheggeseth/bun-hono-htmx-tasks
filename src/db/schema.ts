@@ -6,7 +6,7 @@ export const tasksTable = sqliteTable('tasks_table', {
 	creationDate: int({ mode: 'timestamp' })
 		.notNull()
 		.$defaultFn(() => new Date()),
-	completionDate: int(),
+	completionDate: int({ mode: 'timestamp' }),
 });
 
 export type Task = typeof tasksTable.$inferSelect;

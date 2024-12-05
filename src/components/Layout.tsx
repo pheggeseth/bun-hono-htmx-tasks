@@ -9,7 +9,7 @@ export function Layout({ children }: PropsWithChildren) {
 				<script src="https://cdn.tailwindcss.com" />
 				<script src="https://unpkg.com/htmx.org@2.0.3" />
 			</head>
-			<body class="h-full">
+			<body class="h-full bg-gray-50">
 				<div class="h-full mx-auto p-4 max-w-lg">{children}</div>
 			</body>
 		</html>
