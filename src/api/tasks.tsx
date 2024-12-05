@@ -1,6 +1,7 @@
 import { desc, eq, isNotNull, isNull } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { Button } from '../components/Button';
+import { ButtonGroup } from '../components/ButtonGroup';
 import { TaskListItem } from '../components/TaskListItem';
 import { db } from '../db';
 import { tasksTable } from '../db/schema';
@@ -34,23 +35,32 @@ export const tasks = new Hono()
 			<div id="wrapper">
 				<div class="flex gap-1 mb-2">
 					<div>Show:</div>
-					<Button hx-get="/api/tasks" hx-target="#wrapper" hx-swap="outerHTML">
-						All
-					</Button>
-					<Button
-						hx-get="/api/tasks?filter=active"
-						hx-target="#wrapper"
-						hx-swap="outerHTML"
-					>
-						Active
-					</Button>
-					<Button
-						hx-get="/api/tasks?filter=completed"
-						hx-target="#wrapper"
-						hx-swap="outerHTML"
-					>
-						Completed
-					</Button>
+					<ButtonGroup>
+						<Button
+							selected={!filter}
+							hx-get="/api/tasks"
+							hx-target="#wrapper"
+							hx-swap="outerHTML"
+						>
+							All
+						</Button>
+						<Button
+							selected={filter === 'active'}
+							hx-get="/api/tasks?filter=active"
+							hx-target="#wrapper"
+							hx-swap="outerHTML"
+						>
+							Active
+						</Button>
+						<Button
+							selected={filter === 'completed'}
+							hx-get="/api/tasks?filter=completed"
+							hx-target="#wrapper"
+							hx-swap="outerHTML"
+						>
+							Completed
+						</Button>
+					</ButtonGroup>
 				</div>
 				<ul>
 					{tasks.map((task) => (
