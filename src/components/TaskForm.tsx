@@ -6,7 +6,7 @@ export function TaskForm({ taskListId }: { taskListId: string }) {
 			class="flex items-center gap-2"
 			hx-post="/api/tasks"
 			hx-target={`#${taskListId}`}
-			hx-swap="beforeend"
+			hx-swap="afterbegin"
 			hx-on-htmx-after-request="this.reset()"
 		>
 			<input

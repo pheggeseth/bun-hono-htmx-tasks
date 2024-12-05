@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { TaskListItem } from '../components/TaskListItem';
 import { db } from '../db';
@@ -6,7 +6,11 @@ import { tasksTable } from '../db/schema';
 
 export const tasks = new Hono()
 	.get('/', async (c) => {
-		const tasks = await db.select().from(tasksTable);
+		const tasks = await db
+			.select()
+			.from(tasksTable)
+			.orderBy(desc(tasksTable.creationDate));
+
 		return c.html(
 			<>
 				{tasks.map((task) => (
