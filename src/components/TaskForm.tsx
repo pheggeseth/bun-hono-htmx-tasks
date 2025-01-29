@@ -16,9 +16,7 @@ export function TaskForm({ taskListId }: { taskListId: string }) {
 				required
 				placeholder="What needs to be done?"
 			/>
-			<Button type="submit" variant="primary">
-				Add task
-			</Button>
+			<Button type="submit">Add task</Button>
 		</form>
 	);
 }

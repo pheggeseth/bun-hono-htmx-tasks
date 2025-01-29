@@ -1,11 +1,15 @@
 import {
 	Children,
+	type JSX,
 	type PropsWithChildren,
 	cloneElement,
 	isValidElement,
 } from 'hono/jsx';
 
-export function ButtonGroup({ children, ...props }: PropsWithChildren) {
+export function ButtonGroup({
+	children,
+	...props
+}: PropsWithChildren<JSX.IntrinsicElements['div']>) {
 	return (
 		<div {...props} class="flex">
 			{Array.isArray(children)
